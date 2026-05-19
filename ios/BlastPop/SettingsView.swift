@@ -4,6 +4,7 @@ struct SettingsView: View {
     @EnvironmentObject var soundManager: SoundManager
     @AppStorage("isDarkMode") private var isDarkMode = true
     @AppStorage("isHapticEnabled") private var isHapticEnabled = true
+    @AppStorage("isNotificationsEnabled") private var isNotificationsEnabled = false
     @AppStorage("totalPops") private var totalPops = 0
     @AppStorage("totalMinutes") private var totalMinutes = 0
     @AppStorage("streakDays") private var streakDays = 0
@@ -46,6 +47,24 @@ struct SettingsView: View {
                         }
                         Toggle(isOn: $isDarkMode) {
                             Label("Dark Mode", systemImage: "moon.fill")
+                        }
+                    }
+                    .listRowBackground(Color(hex: "2a1a3e"))
+
+                    Section("Notifications") {
+                        Toggle(isOn: $isNotificationsEnabled) {
+                            Label("Daily Reminder", systemImage: "bell.fill")
+                        }
+                        .onChange(of: isNotificationsEnabled) { _, newValue in
+                            if newValue {
+                                BlastNotificationService.shared.requestAuthorization { granted in
+                                    if granted {
+                                        BlastNotificationService.shared.scheduleDailyReminder()
+                                    }
+                                }
+                            } else {
+                                BlastNotificationService.shared.cancelNotification(identifier: "daily_reminder")
+                            }
                         }
                     }
                     .listRowBackground(Color(hex: "2a1a3e"))
