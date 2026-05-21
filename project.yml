@@ -1,0 +1,66 @@
+name: BlastPop
+options:
+  bundleIdPrefix: com.ggsheng
+  deploymentTarget:
+    iOS: "17.0"
+  xcodeVersion: "15.0"
+  generateEmptyDirectories: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    MARKETING_VERSION: "3.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+    CODE_SIGN_STYLE: Automatic
+    DEVELOPMENT_TEAM: "9L6N2ZF26B"
+    ENABLE_USER_SCRIPT_SANDBOXING: NO
+
+targets:
+  BlastPop:
+    type: application
+    platform: iOS
+    sources:
+      - path: BlastPop
+        excludes:
+          - "**/*.xcassets/AppIcon.appiconset/*"
+    resources:
+      - path: BlastPop/Assets.xcassets
+    settings:
+      base:
+        INFOPLIST_FILE: BlastPop/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.ggsheng.BlastPop
+        CODE_SIGN_ENTITLEMENTS: BlastPop/BlastPop.entitlements
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS: YES
+        GENERATE_INFOPLIST_FILE: NO
+        SWIFT_EMIT_LOC_STRINGS: YES
+    entitlements:
+      path: BlastPop/BlastPop.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+
+  BlastPopTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: BlastPopTests
+    dependencies:
+      - target: BlastPop
+    settings:
+      base:
+        INFOPLIST_FILE: BlastPopTests/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.ggsheng.BlastPopTests
+        GENERATE_INFOPLIST_FILE: YES
+
+  BlastPopUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: BlastPopUITests
+    dependencies:
+      - target: BlastPop
+    settings:
+      base:
+        INFOPLIST_FILE: BlastPopUITests/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.ggsheng.BlastPopUITests
+        GENERATE_INFOPLIST_FILE: YES
